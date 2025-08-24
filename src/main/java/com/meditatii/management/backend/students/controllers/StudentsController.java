@@ -1,26 +1,46 @@
 package com.meditatii.management.backend.students.controllers;
 
+import com.meditatii.management.backend.students.dto.CreateStudentDto;
+import com.meditatii.management.backend.students.dto.UpdateStudentDto;
 import com.meditatii.management.backend.students.entities.StudentEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.meditatii.management.backend.students.services.StudentService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/api/students")
 public class StudentsController {
 
-    @GetMapping
+    @Autowired    // inject the service automatically
+    private StudentService service;
+
+    @GetMapping    // mark this as a get endpoint
     public List<StudentEntity> getStudents(){
-        StudentEntity student1 = new StudentEntity("123bbb", "Ana");
-        StudentEntity student2 = new StudentEntity("aaa123", "Marius");
+        return service.getAllStudents();
+    }
 
-        List<StudentEntity> students = new ArrayList<StudentEntity>();
-        students.add(student1);
-        students.add(student2);
+    @PostMapping   // mark this as a post endpoint
+    public StudentEntity createStudent(@RequestBody CreateStudentDto dto){
+        StudentEntity createdStudent = service.createStudent(dto);
+        return createdStudent;
+    }
 
-        return students;
+    @PatchMapping
+    public ResponseEntity<StudentEntity> updateStudent(@RequestBody UpdateStudentDto dto){
+        try {
+            StudentEntity updatedStudent = service.updateStudent(dto);
+            return ResponseEntity.ok(updatedStudent);  // when we have the ok status then we return the student and status 200
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteStudent(@PathVariable String id){
+        service.deleteStudent(id);
     }
 }
