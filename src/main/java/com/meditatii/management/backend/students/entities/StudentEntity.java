@@ -1,5 +1,6 @@
 package com.meditatii.management.backend.students.entities;
 
+import com.meditatii.management.backend.shared.entities.ContactInfo;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -32,5 +33,10 @@ public class StudentEntity {
 
     @Column
     Double hourlyRate;
+
+    @OneToOne(cascade = CascadeType.ALL)   // relation one to one to the contactInfo class and
+                                            // we connect the two object by cascading all operations
+                                            // (if we delete student, the contact info will be deleted too)
+    ContactInfo contactInfo;
 
 }
