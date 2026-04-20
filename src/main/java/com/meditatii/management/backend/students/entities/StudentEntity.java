@@ -6,7 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Data   // generate getters and setters
@@ -39,4 +41,11 @@ public class StudentEntity {
                                             // (if we delete student, the contact info will be deleted too)
     ContactInfo contactInfo;
 
+    @OneToMany(fetch = FetchType.EAGER)  // ne trage si lista de note dim baza de date
+    @JoinColumn(name = "student_id")
+    List<GradeEntity> grades;
+
+    @ManyToOne
+    @JoinColumn(name = "parent_id")
+    ParentEntity parent;
 }
