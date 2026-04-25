@@ -48,4 +48,5 @@ public class StudentEntity {
     @ManyToOne
     @JoinColumn(name = "parent_id")
     ParentEntity parent;
+
 }

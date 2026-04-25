@@ -7,6 +7,7 @@ import com.meditatii.management.backend.students.entities.StudentEntity;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.LinkedList;
 
 @Data
 public class CreateStudentDto {
@@ -35,6 +36,7 @@ public class CreateStudentDto {
         entity.setHourlyRate(hourlyRate);
         entity.setDateOfBirth(dateOfBirth);
         entity.setContactInfo(contactInfo);
+        entity.setGrades(new LinkedList<>());
         return entity;
     }
 }
